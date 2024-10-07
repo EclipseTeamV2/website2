@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Lookup</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>IP Lookup</h1>
+    </header>
+
+    <main class="main-content">
+        <div class="stat-card">
+            <h3>IP Lookup</h3>
+            <div class="service-input">
+                <input type="text" id="ip-input" placeholder="Enter IP address...">
+                <button id="ip-btn" class="button">Lookup</button>
+            </div>
+            <div id="ip-result" class="service-result"></div>
+        </div>
+    </main>
+
+    <script>
+        // Function to perform IP Lookup
+        document.getElementById('ip-btn').onclick = function() {
+            const ip = document.getElementById('ip-input').value;
+            const ipResult = document.getElementById('ip-result');
+
+            // Reset result display
+            ipResult.style.display = 'none';
+            ipResult.className = 'service-result'; // Reset classes
+
+            if (ip) {
+                fetch(`https://ipinfo.io/${ip}?token=34861bc8fb7a23`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            ipResult.textContent = `Error: ${data.reason}`;
+                            ipResult.classList.add('error');
+                        } else {
+                            ipResult.innerHTML = `<strong>IP Address:</strong> ${data.ip}<br>
+                                                  <strong>City:</strong> ${data.city}<br>
+                                                  <strong>Region:</strong> ${data.region}<br>
+                                                  <strong>Country:</strong> ${data.country}<br>
+                                                  <strong>ISP:</strong> ${data.org}`;
+                            ipResult.classList.add('success');
+                        }
+                    })
+                    .catch(error => {
+                        ipResult.textContent = `Error: ${error.message}`;
+                        ipResult.classList.add('error');
+                    })
+                    .finally(() => {
+                        ipResult.style.display = 'block';
+                    });
+            } else {
+                ipResult.textContent = 'Please enter a valid IP address.';
+                ipResult.classList.add('error');
+                ipResult.style.display = 'block';
+            }
+        };
+    </script>
+</body>
+</html>
