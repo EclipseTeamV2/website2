@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Search</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Database Search</h1>
+    </header>
+
+    <main class="main-content">
+        <div class="stat-card">
+            <h3>Database Search</h3>
+            <div class="service-input">
+                <input type="text" id="db-input" placeholder="Enter search term...">
+                <button id="db-btn" class="button">Search</button>
+            </div>
+            <div id="db-result" class="service-result"></div>
+        </div>
+    </main>
+
+    <script>
+        // Mock database for demonstration
+        const mockDatabase = {
+            "apple": "A fruit that is red or green.",
+            "banana": "A long yellow fruit.",
+            "carrot": "A root vegetable that is orange."
+        };
+
+        // Function to perform Database Search
+        document.getElementById('db-btn').onclick = function() {
+            const term = document.getElementById('db-input').value;
+            const dbResult = document.getElementById('db-result');
+
+            // Reset result display
+            dbResult.style.display = 'none';
+            dbResult.className = 'service-result'; // Reset classes
+
+            if (term) {
+                if (mockDatabase[term.toLowerCase()]) {
+                    dbResult.textContent = `Result for "${term}": ${mockDatabase[term.toLowerCase()]}`;
+                    dbResult.classList.add('success');
+                } else {
+                    dbResult.textContent = `No results found for "${term}".`;
+                    dbResult.classList.add('error');
+                }
+                dbResult.style.display = 'block';
+            } else {
+                dbResult.textContent = 'Please enter a search term.';
+                dbResult.classList.add('error');
+                dbResult.style.display = 'block';
+            }
+        };
+    </script>
+</body>
+</html>

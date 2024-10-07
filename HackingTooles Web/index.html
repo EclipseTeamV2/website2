@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>My Stylish Web App</title>
+    <style>
+        /* Simple styling for the login form */
+        .login-form {
+            display: none; /* Initially hidden */
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .login-form input {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+        }
+        .login-form button {
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Stylish Web App</h1>
+        <nav class="navbar">
+            <ul>
+                <li><a href="#" onclick="showSection('home')">Home</a></li>
+                <li><a href="#" onclick="showSection('ip-lookup')">IP Lookup</a></li>
+                <li><a href="#" onclick="showSection('db-search')">Database Search</a></li>
+                <li><a href="#" onclick="showSection('email-search')">Email Search</a></li>
+                <li><a href="#" onclick="showSection('website-status')">Website Status</a></li>
+                <li><a href="#" onclick="showSection('security-tips')">Security Tips</a></li>
+                <li><a href="#" onclick="showSection('login')">Login</a></li> <!-- Link to the login section -->
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <!-- Login Section -->
+        <section class="login-form" id="login" style="display:none;">
+            <h2>Login</h2>
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button id="login-btn">Login</button>
+            <button id="register-btn">Register</button>
+            <div id="login-message" class="service-result"></div> <!-- Message area -->
+        </section>
+
+        <!-- Home Section -->
+        <section class="stat-card" id="home" style="display:none;">
+            <h2>Home</h2>
+            <h3>Join Our Discord Server</h3>
+            <p>Join our Discord community to discuss security topics and get help!</p>
+            <a href="https://discord.gg/5BCf9aScu4" target="_blank" class="button">Join Discord</a>
+            
+            <h3>30 Security Tips & Tricks</h3>
+            <ul id="security-tips-list"></ul>
+
+            <h3>30 Security Tools</h3>
+            <ul id="security-tools-list"></ul>
+
+            <h3>VPNs (Free & Paid)</h3>
+            <ul id="vpn-list"></ul>
+        </section>
+
+        <section class="stat-card" id="ip-lookup" style="display:none;">
+            <h2>IP Lookup</h2>
+            <div class="service-input">
+                <input type="text" id="ip-input" placeholder="Enter IP address...">
+                <button id="ip-btn" class="button">Lookup IP</button>
+            </div>
+            <div id="ip-result" class="service-result"></div>
+        </section>
+
+        <section class="stat-card" id="db-search" style="display:none;">
+            <h2>Database Search</h2>
+            <div class="service-input">
+                <input type="text" id="db-input" placeholder="Search database...">
+                <button id="db-btn" class="button">Search Database</button>
+            </div>
+            <div id="db-result" class="service-result"></div>
+        </section>
+
+        <section class="stat-card" id="email-search" style="display:none;">
+            <h2>Email Search</h2>
+            <div class="service-input">
+                <input type="text" id="email-input" placeholder="Enter email address...">
+                <button id="email-btn" class="button">Search Email</button>
+            </div>
+            <div id="email-result" class="service-result"></div>
+        </section>
+
+        <section class="stat-card" id="website-status" style="display:none;">
+            <h2>Website Status Checker</h2>
+            <div class="service-input">
+                <input type="text" id="status-input" placeholder="Enter website URL...">
+                <button id="check-status" class="button">Check Status</button>
+            </div>
+            <div id="status-result" class="service-result"></div>
+        </section>
+
+        <section class="stat-card" id="security-tips" style="display:none;">
+            <h2>Random Security Tips</h2>
+            <div id="security-tips-container"></div>
+            <button id="new-tip" class="button">Get New Tip</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 My Stylish Web App. Join our <a href="https://discord.gg/YOUR_DISCORD_LINK" target="_blank">Discord</a>!</p>
+    </footer>
+
+    <script>
+        // Function to show the selected section and hide others
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.stat-card, .login-form');
+            sections.forEach(section => section.style.display = 'none');
+
+            // Show the selected section
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        // Login functionality
+        const usersDatabase = {}; // Simulated database
+
+        document.getElementById('login-btn').onclick = function() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const message = document.getElementById('login-message');
+
+            // Simulate user authentication
+            if (usersDatabase[username] && usersDatabase[username] === password) {
+                message.textContent = 'Login successful!';
+                message.className = 'service-result success';
+                // Optionally, redirect to a different section or load user data
+                showSection('home');
+            } else {
+                message.textContent = 'Invalid username or password.';
+                message.className = 'service-result error';
+            }
+        };
+
+        document.getElementById('register-btn').onclick = function() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const message = document.getElementById('login-message');
+
+            // Check if username already exists
+            if (usersDatabase[username]) {
+                message.textContent = 'Username already taken. Please choose another.';
+                message.className = 'service-result error';
+            } else if (username && password) {
+                // Simulate user registration
+                usersDatabase[username] = password;
+                message.textContent = 'Registration successful! You can now log in.';
+                message.className = 'service-result success';
+                // Optionally, reset the input fields after registration
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+            } else {
+                message.textContent = 'Please enter both username and password.';
+                message.className = 'service-result error';
+            }
+        };
+
+        // IP Lookup functionality
+        document.getElementById('ip-btn').onclick = function() {
+            const ip = document.getElementById('ip-input').value;
+            const ipResult = document.getElementById('ip-result');
+            ipResult.style.display = 'none';
+            ipResult.className = 'service-result'; // Reset classes
+
+            if (ip) {
+                fetch(`https://ipinfo.io/${ip}/json?token=34861bc8fb7a23`)
+                    .then(response => response.json())
+                    .then(data => {
+                        ipResult.textContent = `IP: ${data.ip} | Location: ${data.city}, ${data.region} | Country: ${data.country} | ISP: ${data.org}`;
+                        ipResult.classList.add('success');
+                        ipResult.style.display = 'block';
+                    })
+                    .catch(error => {
+                        ipResult.textContent = 'Error fetching IP information.';
+                        ipResult.classList.add('error');
+                        ipResult.style.display = 'block';
+                    });
+            } else {
+                ipResult.textContent = 'Please enter a valid IP address.';
+                ipResult.classList.add('error');
+                ipResult.style.display = 'block';
+            }
+        };
+
+        // Database Search functionality
+        const mockDatabase = {
+            "term1": "Result for term 1",
+            "term2": "Result for term 2",
+            "term3": "Result for term 3"
+        };
+
+        document.getElementById('db-btn').onclick = function() {
+            const term = document.getElementById('db-input').value;
+            const dbResult = document.getElementById('db-result');
+            dbResult.style.display = 'none';
+            dbResult.className = 'service-result'; // Reset classes
+
+            if (term) {
+                if (mockDatabase[term.toLowerCase()]) {
+                    dbResult.textContent = `Result for "${term}": ${mockDatabase[term.toLowerCase()]}`;
+                    dbResult.classList.add('success');
+                } else {
+                    dbResult.textContent = `No results found for "${term}".`;
+                    dbResult.classList.add('error');
+                }
+                dbResult.style.display = 'block';
+            } else {
+                dbResult.textContent = 'Please enter a search term.';
+                dbResult.classList.add('error');
+                dbResult.style.display = 'block';
+            }
+        };
+
+        // Email Search functionality
+        const mockEmails = {
+            "user@example.com": "User One",
+            "admin@example.com": "Admin User",
+            "test@example.com": "Test User"
+        };
+
+        document.getElementById('email-btn').onclick = function() {
+            const email = document.getElementById('email-input').value;
+            const emailResult = document.getElementById('email-result');
+            emailResult.style.display = 'none';
+            emailResult.className = 'service-result'; // Reset classes
+
+            if (email) {
+                if (mockEmails[email.toLowerCase()]) {
+                    emailResult.textContent = `Result for "${email}": ${mockEmails[email.toLowerCase()]}`;
+                    emailResult.classList.add('success');
+                } else {
+                    emailResult.textContent = `No results found for "${email}".`;
+                    emailResult.classList.add('error');
+                }
+                emailResult.style.display = 'block';
+            } else {
+                emailResult.textContent = 'Please enter a valid email address.';
+                emailResult.classList.add('error');
+                emailResult.style.display = 'block';
+            }
+        };
+
+        // Website Status Checker functionality
+        document.getElementById('check-status').onclick = function() {
+            const website = document.getElementById('status-input').value;
+            const statusResult = document.getElementById('status-result');
+            statusResult.style.display = 'none';
+            statusResult.className = 'service-result'; // Reset classes
+
+            if (website) {
+                fetch(`https://api.somestatuschecker.com/check?url=${website}`) // Placeholder API
+                    .then(response => response.json())
+                    .then(data => {
+                        statusResult.textContent = `Status for ${website}: ${data.status ? 'Up' : 'Down'}`;
+                        statusResult.classList.add(data.status ? 'success' : 'error');
+                        statusResult.style.display = 'block';
+                    })
+                    .catch(error => {
+                        statusResult.textContent = 'Error checking status.';
+                        statusResult.classList.add('error');
+                        statusResult.style.display = 'block';
+                    });
+            } else {
+                statusResult.textContent = 'Please enter a valid website URL.';
+                statusResult.classList.add('error');
+                statusResult.style.display = 'block';
+            }
+        };
+
+        // Security Tips
+        const securityTips = [
+            "Use strong and unique passwords for each account.",
+            "Enable two-factor authentication wherever possible.",
+            "Keep your software and systems updated.",
+            "Be cautious of phishing attacks.",
+            "Regularly back up your data.",
+            "Use a firewall to protect your network.",
+            "Avoid public Wi-Fi for sensitive transactions.",
+            "Secure your home network with strong passwords.",
+            "Educate yourself about social engineering attacks.",
+            "Monitor your accounts regularly for unauthorized transactions.",
+            "Use antivirus and anti-malware software.",
+            "Limit sharing personal information online.",
+            "Be careful of suspicious links in emails.",
+            "Regularly review your privacy settings on social media.",
+            "Use a password manager to store your passwords securely.",
+            "Always log out of accounts when finished.",
+            "Use encryption for sensitive files.",
+            "Keep your devices physically secure.",
+            "Consider using a Virtual Private Network (VPN).",
+            "Be aware of the latest security threats.",
+            "Use disposable email addresses for sign-ups.",
+            "Limit the use of browser extensions.",
+            "Use secure and private search engines.",
+            "Be cautious with mobile apps and their permissions.",
+            "Regularly update your recovery information.",
+            "Use hardware security keys for additional protection.",
+            "Review and revoke access to third-party applications.",
+            "Consider identity theft protection services.",
+            "Limit location tracking on devices.",
+            "Be cautious of unsolicited phone calls.",
+            "Use physical security measures, like locks and cameras."
+        ];
+
+        // Populate security tips list
+        const tipsList = document.getElementById('security-tips-list');
+        securityTips.forEach(tip => {
+            const listItem = document.createElement('li');
+            listItem.textContent = tip;
+            tipsList.appendChild(listItem);
+        });
+
+        // Security Tools and VPNs
+        const securityTools = [
+            "Nmap - Network exploration tool and security/port scanner.",
+            "Wireshark - Network protocol analyzer.",
+            "Metasploit - Penetration testing software.",
+            "Burp Suite - Web security testing tool.",
+            "OWASP ZAP - Open source web application security scanner.",
+            "Aircrack-ng - Wireless security auditing tools.",
+            "Kali Linux - Linux distribution for penetration testing.",
+            "Snort - Intrusion detection system.",
+            "Splunk - Security information and event management (SIEM).",
+            "Nessus - Vulnerability scanner."
+        ];
+
+        const vpnList = [
+            "NordVPN - Paid VPN service.",
+            "ExpressVPN - Paid VPN service.",
+            "ProtonVPN - Free and paid plans available.",
+            "Windscribe - Free and paid plans.",
+            "TunnelBear - Free and paid plans.",
+            "CyberGhost - Paid VPN service.",
+            "Surfshark - Paid VPN service.",
+            "Hide.me - Free and paid plans.",
+            "Private Internet Access - Paid VPN service.",
+            "Hotspot Shield - Free and paid plans."
+        ];
+
+        // Populate Security Tools
+        const toolsList = document.getElementById('security-tools-list');
+        securityTools.forEach(tool => {
+            const listItem = document.createElement('li');
+            listItem.textContent = tool;
+            toolsList.appendChild(listItem);
+        });
+
+        // Populate VPN List
+        const vpnUL = document.getElementById('vpn-list');
+        vpnList.forEach(vpn => {
+            const listItem = document.createElement('li');
+            listItem.textContent = vpn;
+            vpnUL.appendChild(listItem);
+        });
+
+        // Random Security Tips Functionality
+        const tipsContainer = document.getElementById('security-tips-container');
+        const tipButton = document.getElementById('new-tip');
+
+        function displayRandomTip() {
+            const randomTip = securityTips[Math.floor(Math.random() * securityTips.length)];
+            tipsContainer.textContent = randomTip;
+        }
+
+        tipButton.onclick = displayRandomTip;
+        displayRandomTip(); // Display an initial random tip on load
+    </script>
+</body>
+</html>

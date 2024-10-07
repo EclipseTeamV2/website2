@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Search</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Email Search</h1>
+    </header>
+
+    <main class="main-content">
+        <div class="stat-card">
+            <h3>Email Search</h3>
+            <div class="service-input">
+                <input type="text" id="email-input" placeholder="Enter email...">
+                <button id="email-btn" class="button">Search</button>
+            </div>
+            <div id="email-result" class="service-result"></div>
+        </div>
+    </main>
+
+    <script>
+        // Mock email data for demonstration
+        const mockEmails = {
+            "user@example.com": "User One",
+            "admin@example.com": "Admin User",
+            "test@example.com": "Test User"
+        };
+
+        // Function to perform Email Search
+        document.getElementById('email-btn').onclick = function() {
+            const email = document.getElementById('email-input').value;
+            const emailResult = document.getElementById('email-result');
+
+            // Reset result display
+            emailResult.style.display = 'none';
+            emailResult.className = 'service-result'; // Reset classes
+
+            if (email) {
+                if (mockEmails[email.toLowerCase()]) {
+                    emailResult.textContent = `Result for "${email}": ${mockEmails[email.toLowerCase()]}`;
+                    emailResult.classList.add('success');
+                } else {
+                    emailResult.textContent = `No results found for "${email}".`;
+                    emailResult.classList.add('error');
+                }
+                emailResult.style.display = 'block';
+            } else {
+                emailResult.textContent = 'Please enter a valid email address.';
+                emailResult.classList.add('error');
+                emailResult.style.display = 'block';
+            }
+        };
+    </script>
+</body>
+</html>
